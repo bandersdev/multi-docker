@@ -1,0 +1,29 @@
+sudo: reqiored
+services:
+  - docker
+
+before_install:
+  # The build context is client, not the root dir of the repo
+  - docker build -t bryananders/react-test -f ./client/Dockerfile.dev ./client
+
+# Script is where tests go
+# Everything here needs to return 0 or the build fails
+script:
+  - docker run -e CI=true USERNAME/react-test npm test
+  
+after_success:
+  - docker build -t bryananders/multi-client ./client
+  - docker build -t bryananders/multi-worker ./worker
+  - docker build -t bryananders/multi-server ./server
+  - docker build -t bryananders/multi-nginx ./nginx
+
+# Create environment variables in Travis CI
+# Log in to the docker CLI
+ - echo "$DOCKER_PASSWORD" |  docker login -u "$DOCKER_ID" --password-stdin
+
+
+# Push images to Docker Hub
+- docker push bryananders/multi-client
+- docker push bryananders/multi-worker
+- docker push bryananders/multi-server
+- docker push bryananders/multi-nginx
