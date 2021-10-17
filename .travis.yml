@@ -27,3 +27,11 @@ after_success:
   - docker push bryananders/multi-worker
   - docker push bryananders/multi-server
   - docker push bryananders/multi-nginx
+
+deploy:
+  app: multi-docker
+  env: Multidocker-env
+  bucket_name: elasticbeanstalk-us-east-2-035090586652Info
+  bucket_path: multi-docker
+  aws_key_id: $AWS_ACCESS_KEY
+  aws_SECRET_KEY: $AWS_SECRET_KEY

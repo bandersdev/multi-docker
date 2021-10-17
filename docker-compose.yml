@@ -4,6 +4,7 @@ services:
     image: "banders/multi-client"
     mem_limit: 128m
     hostname: client
+
   server:
     image: "banders/multi-server"
     mem_limit: 128m
@@ -16,6 +17,7 @@ services:
       - PGDATABASE=$PGDATABASE
       - PGPASSWORD=$PGPASSWORD
       - PGPORT=$PGPORT
+
   worker:
     image: "bryananders/multi-worker"
     mem_limit: 128m
@@ -23,6 +25,7 @@ services:
     environment:
       - REDIS_HOST=$REDIS_HOST
       - REDIS_PORT=$REDIS_PORT
+      
   nginx:
     image: "bryananders/multi-nginx"
     mem_limit: 128m
