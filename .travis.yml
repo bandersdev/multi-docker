@@ -31,7 +31,7 @@ after_success:
 deploy:
   app: multi-docker
   env: Multidocker-env
-  bucket_name: elasticbeanstalk-us-east-2-035090586652Info
+  bucket_name: elasticbeanstalk-us-east-2-035090586652
   bucket_path: multi-docker
   aws_key_id: $AWS_ACCESS_KEY
   aws_SECRET_KEY: $AWS_SECRET_KEY
