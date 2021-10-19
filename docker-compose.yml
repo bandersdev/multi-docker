@@ -1,12 +1,12 @@
 version: "3"
 services:
   client:
-    image: "banders/multi-client"
+    image: "bryananders/multi-client"
     mem_limit: 128m
     hostname: client
 
   server:
-    image: "banders/multi-server"
+    image: "bryananders/multi-server"
     mem_limit: 128m
     hostname: api
     environment:
