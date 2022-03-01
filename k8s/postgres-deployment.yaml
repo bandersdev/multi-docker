@@ -1,0 +1,37 @@
+# Need to add env variables
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-deployment
+spec:
+  # Setting this to more than 1 can cause concurrency problems
+  replicas: 1
+  selector:
+    matchLabels:
+      name: postgres
+  template:
+    metadata:
+      labels:
+        name: postgres
+    spec:
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: database-persistent-volume-claim
+      containers:
+        - name: postgres
+          image: postgres
+          ports:
+            - containerPort: 5432
+          volumeMounts: # match names in the volumes spec
+            - name: postgres-storage
+              mountPath: /var/lib/postgresql/data
+              # stores the data in a directory called postgres in the persistent volume
+              # this tricks postgres into wanting to save to the volume
+              subPath: postgres
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: pgpassword
+                  key: PGPASSWORD
