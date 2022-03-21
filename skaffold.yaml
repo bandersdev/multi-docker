@@ -1,0 +1,41 @@
+apiVersion: skaffold/v2beta12
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./k8s/*
+build:
+  # Don't push images to a registry
+  local:
+    push: false
+  artifacts:
+    - image: cygnetops/client-skaffold
+      context: client
+      docker:
+        dockerfile: Dockerfile.dev
+      sync:
+        # copy changed js, css, or html files into the container
+        # changing other things will cause skaffold to rebuild the server
+        manual:
+          - src: "src/**/*.js"
+            dest: .
+          - src: "src/**/*.css"
+            dest: .
+          - src: "src/**/*.html"
+            dest: .
+    - image: cygnetops/worker-skaffold
+      context: worker
+      docker:
+        dockerfile: Dockerfile.dev
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
+    - image: cygnetops/server-skaffold
+      context: server
+      docker:
+        dockerfile: Dockerfile.dev
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
